@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+	--background-color: #0b0607;
+	--app-background: #170d10;
+	--card-background: #241318;
+	--text-color: #f0e3e2;
+	--muted-color: #a98d90;
+	--accent-color: #8a1c2e;
+	--accent-light: #c4455d;
+	--border-color: #4a2330;
+	--border-radius: 8px;
+	--app-radius: 12px;
+	--animation-duration: 0.5s;
+}
+
+html {
+	font-family: 'Noto Sans', system-ui, sans-serif;
+	color: var(--text-color);
+	background-color: var(--background-color);
+	background-image: radial-gradient(
+		ellipse at 50% -10%,
+		rgba(138, 28, 46, 0.35),
+		transparent 60%
+	);
+	background-repeat: no-repeat;
+	line-height: 1.3;
+	min-height: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-height: 90dvh;
+	padding: 1rem;
+	margin: 0;
+	min-width: 360px;
+}
+
+.app {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 32rem;
+	margin: 2rem auto 0;
+	padding: 1.5rem;
+	background-color: var(--app-background);
+	border: 1px solid var(--border-color);
+	border-top: 3px solid var(--accent-color);
+	border-radius: var(--app-radius);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+.title {
+	margin: 0 0 1rem;
+	font-size: 1.8rem;
+	font-weight: 700;
+	padding: 0.3rem 0;
+}
+
+.form {
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+	gap: 0.5rem;
+	margin-bottom: 1.25rem;
+}
+
+.input {
+	flex: 1;
+	min-width: 0;
+	font: inherit;
+	font-size: 1rem;
+	padding: 0.5rem 0.75rem;
+	color: var(--text-color);
+	background-color: var(--card-background);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	outline: none;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input::placeholder {
+	color: var(--muted-color);
+}
+
+.input:focus {
+	border-color: var(--accent-light);
+	box-shadow: 0 0 0 3px rgba(196, 69, 93, 0.25);
+}
+
+.button {
+	font: inherit;
+	font-size: 1rem;
+	color: var(--text-color);
+	background-color: var(--accent-color);
+	border: 1px solid var(--accent-light);
+	border-radius: var(--border-radius);
+	padding: 0.4rem 0.75rem;
+	transition: background-color 0.2s, opacity 0.2s;
+	outline: none;
+	cursor: pointer;
+}
+
+.button:not(:disabled):focus-visible {
+	outline: 2px solid var(--accent-light);
+	outline-offset: 2px;
+}
+
+.button:disabled {
+	opacity: 0.8;
+	cursor: not-allowed;
+}
+
+@media (any-hover: hover) {
+	.button:not(:disabled):hover {
+		background-color: var(--accent-light);
+	}
+}
+
+.todos {
+	width: 100%;
+}
+
+.todo {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	width: 100%;
+	padding: 0.6rem 0.75rem;
+	margin-bottom: 0.6rem;
+	border: 1px solid var(--border-color);
+	border-left: 3px solid var(--accent-color);
+	border-radius: var(--border-radius);
+	background-color: var(--card-background);
+	transition: opacity 0.2s;
+}
+
+.todo:last-child {
+	margin-bottom: 0;
+}
+
+.todo-text {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.todo.completed {
+	opacity: 0.6;
+}
+
+.todo.completed .todo-text {
+	text-decoration: line-through;
+	text-decoration-color: var(--accent-light);
+}
+
+.todo-actions {
+	display: flex;
+	gap: 0.25rem;
+	flex-shrink: 0;
+}
+
+.todo-actions .button-complete {
+	background-color: transparent;
+}
+
+@media (any-hover: hover) {
+	.todo-actions .button-complete:not(:disabled):hover {
+		background-color: var(--accent-color);
+	}
+}
+
+/* Анимация добавления и удаления задач (0.5 с) */
+.todo.entering {
+	overflow: hidden;
+	animation: todo-enter var(--animation-duration) ease-out;
+}
+
+.todo.removing {
+	overflow: hidden;
+	pointer-events: none;
+	animation: todo-remove var(--animation-duration) ease-in forwards;
+}
+
+@keyframes todo-enter {
+	from {
+		opacity: 0;
+		transform: translateY(-1rem) scale(0.96);
+		max-height: 0;
+		padding-block: 0;
+		margin-bottom: 0;
+	}
+	to {
+		opacity: 1;
+		transform: none;
+		max-height: 12rem;
+	}
+}
+
+@keyframes todo-remove {
+	from {
+		opacity: 1;
+		transform: none;
+		max-height: 12rem;
+	}
+	to {
+		opacity: 0;
+		transform: translateX(2rem) scale(0.96);
+		max-height: 0;
+		padding-block: 0;
+		margin-bottom: 0;
+		border-width: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.todo.entering,
+	.todo.removing {
+		animation-duration: 0.01s;
+	}
+}
